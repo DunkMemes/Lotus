@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import alpaca_trade_api as tradeapi
 import pandas as pd
 import os
-import streamlit as st
 import plotly as pl
 import json as js
 
@@ -43,15 +42,30 @@ class lotus(object):
         return self.api.get_position(stock)
 
     def get_all_positions(self):
-        return self.api.all()
+        return self.api.list_positions()
 
-    def get_all_orders(self, quantity):
+    def get_stock_value(self, stock):
+        price = self.api.get_latest_bar(stock).c
+        date = self.api.get_latest_bar(stock).t
+        clean_date = date.strftime('%d/%m/%Y')
+        return "{}, {}".format(price, clean_date)
+
+    def get_portfolio_daily(self):
+        return self.api.get_portfolio_history().equity
+
+    def get_portfolio_hourly(self):
+        return self.api.get_portfolio_history(period="1D", timeframe="1H").equity
+
+    def get_portfolio_max(self):
+        return self.api.get_portfolio_history(period="365D", timeframe="1D").equity
+
+    def get_all_orders(self, quantity, st):
         """returns the last orders, user can set how many are to be returned"""
         check_for_more = True
         all_orders = []
         time = pd.to_datetime('now', utc=True).isoformat()
         while check_for_more:
-            api_orders = self.api.list_orders(status='all',
+            api_orders = self.api.list_orders(status=st,
                                               until=time,
                                               direction='desc',
                                               limit=quantity,
@@ -63,11 +77,13 @@ class lotus(object):
 
             else:
                 check_for_more = False
-            return all_orders
-
-            # pandas data frame for later visualization
-            """orders_df = pd.DataFrame([order._raw for order in all_orders])
-            orders_df.drop_duplicates('id', inplace=True)"""
+            orders_df = pd.DataFrame([order._raw for order in all_orders])
+            orders_df.drop_duplicates('id', inplace=True)
+            if orders_df is not None:
+                dt = orders_df[["symbol", "qty", "filled_avg_price", "status"]]
+                return dt
+            else:
+                return None
 
     def check_market_availability(self):
         now = datetime.datetime.now()
@@ -202,3 +218,8 @@ class lotus(object):
                 break
 
         return round_count
+
+
+if __name__ == "__main__":
+    lot = lotus()
+    print(lot.get_portfolio_daily())
