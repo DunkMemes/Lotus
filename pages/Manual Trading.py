@@ -26,12 +26,5 @@ def page_trading():
             st.write("Price date:")
             st.write(clean_date)
 
-    st.subheader("Our trading strategies:")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.button("MV-Average")
-    with col2:
-        st.button("Martingale")
-
 
 page_trading()
