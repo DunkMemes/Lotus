@@ -121,7 +121,7 @@ class lotus(object):
         """
         if self.check_market_availability() is True:
             week_ago = datetime.date.today() - datetime.timedelta(days=7)
-            qty = int(self.get_position(stock))
+            qty = int(self.get_position(stock).qty)
             barset = self.api.get_bars(stock,
                                        timeframe,
                                        start=week_ago,
@@ -137,13 +137,13 @@ class lotus(object):
             long_ma = df['c'].rolling(len(df)-1).mean()
 
             if short_ma.iloc[-1] > long_ma.iloc[-1] and short_ma.iloc[-2] <= long_ma.iloc[-2]:
-                print(f'buying {qty} shares of stock {stock}')
+                return f'buying {qty} shares of stock {stock}'
                 self.buy(qty, stock)
             elif short_ma.iloc[-1] < long_ma.iloc[-1] and short_ma.iloc[-2] >= long_ma.iloc[-2]:
-                print(f'selling {qty} shares of stock {stock}')
+                return f'selling {qty} shares of stock {stock}'
                 self.sell(qty, stock)
             else:
-                print(f'holding {qty} shares of stock {stock}')
+                return f'holding {qty} shares of stock {stock}'
         else:
             return "Market is closed at the moment"
 

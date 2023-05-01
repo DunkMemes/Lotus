@@ -1,23 +1,27 @@
+import threading
+import time
 import streamlit as st
 from api import lotus
+
 
 def pageMV():
     st.title("Moving Average Strategy")
     st.subheader("Customizing you trading strategy")
     running = False
     stock = st.text_input("Stock:")
-    time = st.selectbox("How often would you like to trade?"
+    times = st.selectbox("How often would you like to trade?"
                  , ("Every 15 min", "Every 1 hour", "Every 24 hours"))
-    if time == "Every 15 min":
-        tt = 900
-    elif time == "Every hour":
+    if times == "Every 15 min":
+        tt = 20
+    elif times == "Every 1 hour":
         tt = 3600
-    elif time == "Once a day":
+    elif times == "Every 24 hours":
         tt = 86000
 
     dataTime = st.selectbox("Select the timeframe for your data"
                  , ("Last 24 hours", "Last 7 days", "Last 30 days"))
-    if dataTime == "last 24 hours":
+
+    if dataTime == "Last 24 hours":
         sw = 1
         lw = 23
         tf = "1H"
@@ -31,23 +35,30 @@ def pageMV():
         tf = "1D"
 
     def trade(tt):
-        while running:
-            time.sleep(tt)
-            if running is False:
-                break
-            else:
-                lotus.movingAverageStrategy(stock, tf, sw, lw)
+        print(lotus.movingAverageStrategy(self=lotus(), stock=stock, timeframe=tf, short_window=sw, long_window=lw))
+        # st.experimental_rerun()
 
     col1, col2 = st.columns(2)
+    counter = 0
+    placeholder = st.empty()
     with col1:
         if st.button("Start"):
+            if stock == "":
+                st.warning("Please enter a stock first!")
             if tt is None:
                 st.warning("Please customize your strategy first!")
-            else:
-                running = True
-                trade(tt)
-    with col2:
-        if st.button("Stop"):
-            running = False
+            elif stock != "":
+                running = 1
+            while running == 1:
+                if placeholder.button("Stop", key=counter):
+                    running = 0
+                    print("Stopping the process!")
+                    st.experimental_rerun()
+                elif running == 1:
+                    time.sleep(tt)
+                    counter += 1
+                    t1 = threading.Thread(trade(tt))
+                    t1.start()
+
 
 pageMV()
