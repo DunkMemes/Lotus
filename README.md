@@ -1,7 +1,7 @@
 # Lotus - a fast and effective trading bot
 
 <p align="center">
-  <img src="hhttps://github.com/DunkMemes/Lotus/blob/master/logo.png?raw=true" />
+  <img src="https://github.com/DunkMemes/Lotus/blob/master/logo.png?raw=true" />
 </p>
 
 Welcome to the Lotus ReadME!
