@@ -4,10 +4,11 @@ from api import lotus
 
 def page_trading():
     lot = lotus()
-    st.title("Trading")
+    st.title(":red[Trading]")
     col1, col2 = st.columns(2)
     with col1:
         st.write("Manual trading:")
+        st.write("You have :red[{0}$] to trade with!".format(lot.get_cash()))
         sym = st.text_input("Stock")
         qty = st.text_input("Quantity")
         ucol1, ucol2, ucol3 = st.columns(3)

@@ -4,7 +4,7 @@ from api import lotus
 
 def page_orders():
     lot = lotus()
-    st.title("Your orders:")
+    st.title(":red[Your orders:]")
     qty = st.text_input("Number of orders")
     sta = ""
     max = False
