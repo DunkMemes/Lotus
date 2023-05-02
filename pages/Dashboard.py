@@ -4,55 +4,10 @@ import plotly.express as ple
 from api import lotus
 import plotly.graph_objects as go
 
+lot = lotus()
 
 def page_dasboard():
-    lot = lotus()
-    st.title("Lotus Trading Bot")
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.write("Cash:")
-        st.write(lot.get_cash() + " $")
-    with col2:
-        st.write("Equity:")
-        st.write(lot.get_equity() + " $")
-    with col3:
-        st.write("Profit:")
-        if lot.get_diff() > 0:
-            st.write(":green[{} $]".format(lot.get_diff()))
-        if lot.get_diff() < 0:
-            st.write(":red[{} $]".format(lot.get_diff()))
-    st.subheader("Portfolio:")
-    ucol1, ucol2, ucol3 = st.columns(3)
-    month = False
-    day = False
-    max = False
-    with ucol1:
-        if st.button("1M"):
-            month = True
-    with ucol2:
-        if st.button("1D"):
-            day = True
-    with ucol3:
-        if st.button("1Y"):
-            max = True
-    if month:
-        pt = pd.DataFrame(lot.get_portfolio_daily())
-        line = ple.line(pt)
-        line
-        month = False
-    if day:
-        pt = pd.DataFrame(lot.get_portfolio_hourly())
-        line = ple.line(pt)
-        line
-        day = False
-    if max:
-        pt = pd.DataFrame(lot.get_portfolio_max())
-        line = ple.line(pt)
-        line
-        max = False
-
-    st.subheader("Your positions:")
-
+    st.title("Portfolio")
     positions = lot.get_all_positions()
 
     labels = []
@@ -60,6 +15,9 @@ def page_dasboard():
     for position in positions:
         labels.append(position.symbol)
         values.append(float(position.current_price) * float(position.qty))
+
+    total_equity = lot.get_equity()
+    total_profit = lot.get_diff()
 
     colors = ['#0074D9', '#FF4136', '#2ECC40', '#FFDC00', '#AAAAAA', '#F012BE', '#FF851B']
 
@@ -72,6 +30,12 @@ def page_dasboard():
         textinfo='label+percent',
         textfont=dict(size=15)
     ))
+
+    fig.add_annotation(
+        text=f"Total Equity: {total_equity} $<br>Total Profit: {total_profit} $",
+        font=dict(size=16),
+        showarrow=False
+    )
 
     fig.update_layout(
         margin=dict(l=0, r=0, t=50, b=0),
@@ -145,5 +109,34 @@ def page_dasboard():
             </style>
             """
     st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
+
+    ucol1, ucol2, ucol3 = st.columns(3)
+    month = False
+    day = False
+    max = False
+    with ucol1:
+        if st.button("1D"):
+            day = True
+    with ucol2:
+        if st.button("1M"):
+            month = True
+    with ucol3:
+        if st.button("1Y"):
+            max = True
+    if month:
+        pt = pd.DataFrame(lot.get_portfolio_daily())
+        line = ple.line(pt)
+        line
+        month = False
+    if day:
+        pt = pd.DataFrame(lot.get_portfolio_hourly())
+        line = ple.line(pt)
+        line
+        day = False
+    if max:
+        pt = pd.DataFrame(lot.get_portfolio_max())
+        line = ple.line(pt)
+        line
+        max = False
 
 page_dasboard()
