@@ -1,6 +1,8 @@
 # Lotus - a fast and effective trading bot
 
-![image (1)](https://github.com/DunkMemes/Lotus/blob/master/logo.png?raw=true)
+<p align="center">
+  <img src="hhttps://github.com/DunkMemes/Lotus/blob/master/logo.png?raw=true" />
+</p>
 
 Welcome to the Lotus ReadME!
 This Project is a simple web-based stock trading bot for automatic and manual trading. Lotus has a lot of features, but there are nearly unlimitied possibilities to continue development.
