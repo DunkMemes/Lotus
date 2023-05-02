@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as ple
 from api import lotus
+import plotly.graph_objects as go
 
 
 def page_dasboard():
@@ -51,7 +52,39 @@ def page_dasboard():
         max = False
 
     st.subheader("Your positions:")
+
     positions = lot.get_all_positions()
+
+    labels = []
+    values = []
+    for position in positions:
+        labels.append(position.symbol)
+        values.append(float(position.current_price) * float(position.qty))
+
+    colors = ['#0074D9', '#FF4136', '#2ECC40', '#FFDC00', '#AAAAAA', '#F012BE', '#FF851B']
+
+    fig = go.Figure()
+    fig.add_trace(go.Pie(
+        labels=labels,
+        values=values,
+        hole=0.7,
+        marker=dict(colors=colors),
+        textinfo='label+percent',
+        textfont=dict(size=15)
+    ))
+
+    fig.update_layout(
+        margin=dict(l=0, r=0, t=50, b=0),
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=1.1,
+            xanchor="left",
+            x=0.01
+        ),
+        plot_bgcolor='#F7F7F7'
+    )
+    st.plotly_chart(fig)
 
     positionsTable = pd.DataFrame(columns=["Symbol", "Amount", "Value", "Performance"])
 
@@ -104,20 +137,13 @@ def page_dasboard():
             'props': [('background-color', '#273346')]
         },
     ])
-
     st.table(positionsTable)
-
-    # CSS to inject contained in a string
     hide_dataframe_row_index = """
             <style>
             .row_heading.level0 {display:none}
             .blank {display:none}
             </style>
             """
-
-    # Inject CSS with Markdown
     st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
-
-    # st.write(positions)
 
 page_dasboard()
