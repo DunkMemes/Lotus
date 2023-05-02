@@ -15,10 +15,11 @@ from IPython.display import Image
 
 
 def mailer_page():
-  rec = st.text_input("Your E-Mail adress:")
+  st.markdown("<h1 style='color: #710000;'>Newsletter</h1>", unsafe_allow_html=True)
+  rec = st.text_input("Your E-Mail-address:")
   now = datetime.datetime.now()
   run_time = now.replace(hour=22, minute=00, second=0, microsecond=0)
-  if st.button("I want to receive E-Mails!"):
+  if st.button("Sign me up!"):
     if rec != "":
       while True:
         remaining = (run_time - datetime.datetime.now()).total_seconds()

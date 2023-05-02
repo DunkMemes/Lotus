@@ -4,7 +4,7 @@ from api import lotus
 
 def page_orders():
     lot = lotus()
-    st.title(":red[Your orders:]")
+    st.markdown("<h1 style='color: #710000;'>Your Orders</h1>", unsafe_allow_html=True)
     qty = st.text_input("Number of orders")
     sta = ""
     max = False

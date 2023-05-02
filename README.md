@@ -1,13 +1,13 @@
-# Lotus - a fast and effective trading bot
+# Lotus
 
 <p align="center">
   <img src="https://github.com/DunkMemes/Lotus/blob/master/logo.png?raw=true" />
 </p>
 
 Welcome to the Lotus ReadME!
-This Project is a simple web-based stock trading bot for automatic and manual trading. Lotus has a lot of features, but there are nearly unlimitied possibilities to continue development.
+This Project is a simple web-based stock trading bot for automatic and manual trading. Lotus has a lot of features, but there are nearly unlimited possibilities to continue development.
 
-The Project is written in Python and uses the Alpaca-trade-api to connect to the stock market and Streamlit to deliver a simple, yet fully functional interface.
+The Project is written in Python. It uses the Alpaca-trade-api to connect to the stock market and Streamlit to deliver a simple, yet fully functional interface.
 
 As of now Lotus is only intended to be used with a paper trading account.
 

@@ -5,21 +5,23 @@ from api import lotus
 
 
 def pageMV():
-    st.title("Moving Average Strategy")
-    st.subheader("Customizing you trading strategy")
+    st.markdown("<h1 style='color: #710000;'>Moving Average Strategy</h1>", unsafe_allow_html=True)
+    st.subheader("Customizing your trading strategy:")
     stock = st.text_input("Stock:")
     buy = st.number_input("Buy Quantity:")
-    times = st.selectbox("How often would you like to trade?"
-                         , ("Every 15 min", "Every 1 hour", "Every 24 hours"))
+    times = st.selectbox("How often would you like to trade?",
+                         ("Every 10 Seconds", "Every 15 min", "Every 1 hour", "Every 24 hours"))
+    if times == "Every 10 Seconds":
+        tt = 10
     if times == "Every 15 min":
-        tt = 5
+        tt = 900
     elif times == "Every 1 hour":
         tt = 3600
     elif times == "Every 24 hours":
         tt = 86000
 
-    dataTime = st.selectbox("Select the timeframe for your data"
-                            , ("Last 24 hours", "Last 7 days", "Last 30 days"))
+    dataTime = st.selectbox("Select the timeframe for your data",
+                            ("Last 24 hours", "Last 7 days", "Last 30 days"))
 
     if dataTime == "Last 24 hours":
         sw = 1
@@ -35,12 +37,15 @@ def pageMV():
         tf = "1D"
 
     def trade():
-        print(lotus.movingAverageStrategy(self=lotus(), stock=stock, timeframe=tf, short_window=sw, long_window=lw,
+        print(lotus.movingAverageStrategy(self=lotus(),
+                                          stock=stock,
+                                          timeframe=tf,
+                                          short_window=sw,
+                                          long_window=lw,
                                           buy_qty=buy))
 
     col1, col2 = st.columns(2)
     counter = 0
-    placeholder = st.empty()
 
     def start_trading(event: Event, counter: int, tt: int) -> None:
         if stock == "":
@@ -58,7 +63,7 @@ def pageMV():
                     break
 
     event = Event()
-    thread = Thread(target=start_trading, args=(event, counter, tt,))
+    thread = Thread(target=start_trading, args=(event, counter, tt))
 
     def set_event():
         event.set()

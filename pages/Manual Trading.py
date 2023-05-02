@@ -4,7 +4,7 @@ from api import lotus
 
 def page_trading():
     lot = lotus()
-    st.title(":red[Trading]")
+    st.markdown("<h1 style='color: #710000;'>Trading</h1>", unsafe_allow_html=True)
     col1, col2 = st.columns(2)
     with col1:
         st.write("Manual trading:")
@@ -14,18 +14,25 @@ def page_trading():
         ucol1, ucol2, ucol3 = st.columns(3)
         with ucol1:
             if st.button("Buy"):
-                lot.buy(qty, sym)
+                try:
+                    lot.buy(qty, sym)
+                except:
+                    st.error(f"Insufficient cash to buy {qty} stock from {sym}")
         with ucol2:
             if st.button("Sell"):
                 lot.sell(qty, sym)
     if len(sym) > 0:
         with col2:
             st.write("Stock price:")
-            st.write(lot.api.get_latest_bar(sym).c)
+            price = float(lot.api.get_latest_bar(sym).c)
+            st.write(f":red[{price}$]")
             date = lot.api.get_latest_bar(sym).t
             clean_date = date.strftime('%d/%m/%Y')
             st.write("Price date:")
-            st.write(clean_date)
+            st.write(f":red[{clean_date}]")
+            if qty != "":
+                st.write("Total price:")
+                st.write(f":red[{price * int(qty)}$]")
 
 
 page_trading()

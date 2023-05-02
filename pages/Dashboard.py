@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 lot = lotus()
 
 def page_dasboard():
-    st.title("Portfolio")
+    st.markdown("<h1 style='color: #710000;'>Portfolio</h1>", unsafe_allow_html=True)
     positions = lot.get_all_positions()
 
     labels = []
@@ -79,8 +79,8 @@ def page_dasboard():
                 ('font-size', '14px'),
                 ('text-align', 'left'),
                 ('padding', '6px'),
-                ('background-color', '#F2F2F2'),
-                ('color', '#333333'),
+                ('background-color', '#710000'),
+                ('color', 'white'),
                 ('border-bottom', '1px solid #273346'),
                 ('border-right', '1px solid #273346'),
                 ('border-left', '1px solid #273346'),
