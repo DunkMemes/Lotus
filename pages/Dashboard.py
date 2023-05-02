@@ -110,33 +110,25 @@ def page_dasboard():
             """
     st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
 
-    ucol1, ucol2, ucol3 = st.columns(3)
-    month = False
-    day = False
-    max = False
-    with ucol1:
+    emptyCol, colDay, colMonth, colMax = st.columns([7, 1, 1, 1])
+
+    pt_daily = pd.DataFrame(lot.get_portfolio_hourly())
+    chart = ple.line(pt_daily)
+
+    with emptyCol:
+        pass
+    with colDay:
         if st.button("1D"):
-            day = True
-    with ucol2:
+            pt = pd.DataFrame(lot.get_portfolio_hourly())
+            chart = ple.line(pt)
+    with colMonth:
         if st.button("1M"):
-            month = True
-    with ucol3:
-        if st.button("1Y"):
-            max = True
-    if month:
-        pt = pd.DataFrame(lot.get_portfolio_daily())
-        line = ple.line(pt)
-        line
-        month = False
-    if day:
-        pt = pd.DataFrame(lot.get_portfolio_hourly())
-        line = ple.line(pt)
-        line
-        day = False
-    if max:
-        pt = pd.DataFrame(lot.get_portfolio_max())
-        line = ple.line(pt)
-        line
-        max = False
+            pt = pd.DataFrame(lot.get_portfolio_daily())
+            chart = ple.line(pt)
+    with colMax:
+        if st.button("Max"):
+            pt = pd.DataFrame(lot.get_portfolio_max())
+            chart = ple.line(pt)
+    st.plotly_chart(chart)
 
 page_dasboard()
