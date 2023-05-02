@@ -89,7 +89,7 @@ class lotus(object):
         now = datetime.datetime.now()
         opening = now.replace(hour=15, minute=30, second=0, microsecond=0)
         closing = now.replace(hour=22, minute=0, second=0, microsecond=0)
-        if opening < now > closing:
+        if opening < now < closing:
             return True
         else:
             return False
