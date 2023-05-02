@@ -9,6 +9,7 @@ def pageMV():
     st.subheader("Customizing you trading strategy")
     running = False
     stock = st.text_input("Stock:")
+    buy = st.number_input("Buy Quantity:")
     times = st.selectbox("How often would you like to trade?"
                  , ("Every 15 min", "Every 1 hour", "Every 24 hours"))
     if times == "Every 15 min":
@@ -35,7 +36,7 @@ def pageMV():
         tf = "1D"
 
     def trade(tt):
-        print(lotus.movingAverageStrategy(self=lotus(), stock=stock, timeframe=tf, short_window=sw, long_window=lw))
+        print(lotus.movingAverageStrategy(self=lotus(), stock=stock, timeframe=tf, short_window=sw, long_window=lw, buy_qty=buy))
         # st.experimental_rerun()
 
     col1, col2 = st.columns(2)

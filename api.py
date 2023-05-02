@@ -111,7 +111,7 @@ class lotus(object):
                                                    'day')
 
     def movingAverageStrategy(self, stock, timeframe,
-                              short_window, long_window):
+                              short_window, long_window, buy_qty):
         """uses the moving average strategy to trade stocks
             params:
             stock: str
@@ -120,11 +120,13 @@ class lotus(object):
             long_window: int
         """
         if self.check_market_availability() is True:
-            week_ago = datetime.date.today() - datetime.timedelta(days=7)
-            qty = int(self.get_position(stock).qty)
+            if timeframe == "1D":
+                ago = datetime.date.today() - datetime.timedelta(days=long_window)
+            elif timeframe == "1H":
+                ago = datetime.date.today() - datetime.timedelta(hours=long_window)
             barset = self.api.get_bars(stock,
                                        timeframe,
-                                       start=week_ago,
+                                       start=ago,
                                        limit=long_window+1)
             bars = []
             for x in barset:
@@ -132,18 +134,22 @@ class lotus(object):
 
             c = {'t': [], 'c': []}
             df = pd.DataFrame(bars, columns=c)
-
+            
             short_ma = df['c'].rolling(short_window).mean()
             long_ma = df['c'].rolling(len(df)-1).mean()
 
             if short_ma.iloc[-1] > long_ma.iloc[-1] and short_ma.iloc[-2] <= long_ma.iloc[-2]:
+                self.buy(buy_qty, stock)
                 return f'buying {qty} shares of stock {stock}'
-                self.buy(qty, stock)
             elif short_ma.iloc[-1] < long_ma.iloc[-1] and short_ma.iloc[-2] >= long_ma.iloc[-2]:
+                try:
+                    qty = int(self.get_position(stock).qty)
+                    self.sell(qty, stock)
+                except:
+                    print(f"There are no {stock} stocks to trade!")
                 return f'selling {qty} shares of stock {stock}'
-                self.sell(qty, stock)
             else:
-                return f'holding {qty} shares of stock {stock}'
+                return f'Waiting for next trade cycle'
         else:
             return "Market is closed at the moment"
 
@@ -173,53 +179,7 @@ class lotus(object):
                                                        sell_quantity,
                                                        'sell', 'market', 'day')
 
-    def martingale(self, target_profit, max_rounds, initial_bet, stock):
-        balance = float(self.api.get_account().cash)
-        round_count = 0
-
-        while round_count < max_rounds and balance < target_profit:
-            round_count += 1
-            # Get the current price of the stock
-            bet = balance
-            price = float(self.api.get_latest_trade(stock).price)
-            # Generate a random outcome, either 1 (win) or 0 (lose)
-            outcome = random.randint(0, 1)
-            if outcome == 1:
-                # Double the bet after a win
-                balance += bet * 2 * (price / (price + initial_bet))
-                bet = initial_bet
-            else:
-                # Double the bet after a loss
-                balance -= bet
-                bet *= 2
-            # Place the trade
-            if (int(bet/price) > 0):
-                try:
-                    self.api.submit_order(
-                        symbol=stock,
-                        qty=int(bet / price),
-                        side='buy',
-                        type='limit',
-                        time_in_force='gtc',
-                        limit_price=round(price, 2)
-                    )
-                except:
-                    continue
-            elif (float(self.api.get_account().equity) > target_profit):
-                self.api.submit_order(
-                    symbol=stock,
-                    qty=int(bet/price),
-                    side='sell',
-                    type='limit',
-                    time_in_force='gtc',
-                    limit_price=round(price, 2)
-                )
-            else:
-                break
-
-        return round_count
-
 
 if __name__ == "__main__":
     lot = lotus()
-    print(lot.get_portfolio_daily())
+    lot.movingAverageStrategy('TSLA', "1D", 1, 6, 10)

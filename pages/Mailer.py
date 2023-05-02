@@ -6,14 +6,13 @@ from api import lotus
 import streamlit as st
 import threading
 import datetime
-import schedule
 
 
 
 def mailer_page():
   rec = st.text_input("Your E-Mail adress:")
   now = datetime.datetime.now()
-  run_time = now.replace(hour=16, minute=30, second=0, microsecond=0)
+  run_time = now.replace(hour=22, minute=10, second=0, microsecond=0)
   if st.button("I want to receive E-Mails!"):
     if rec != "":
       while True:
