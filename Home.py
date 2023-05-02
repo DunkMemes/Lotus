@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.title("Welcome to the Lotus API trading Bot")
+st.title("Lotus Trading Bot")
 col1, col2, col3 = st.columns(3)
 with col2:
     st.image("logo.png")
