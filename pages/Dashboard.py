@@ -86,7 +86,7 @@ def page_dasboard():
     )
     st.plotly_chart(fig)
 
-    positionsTable = pd.DataFrame(columns=["Symbol", "Amount", "Value", "Performance"])
+    positionsTable = pd.DataFrame(columns=["Symbol", "Amount", "Value", "Performance %"])
 
     for position in positions:
         symbol = position.symbol
@@ -97,15 +97,15 @@ def page_dasboard():
 
         positionsTable.loc[len(positionsTable)] = [symbol, amount, value, performance]
 
-    positionsTable["Performance"] = positionsTable["Performance"].astype(float)
+    positionsTable["Performance %"] = positionsTable["Performance %"].astype(float)
 
     format_func = lambda x: f"{x:,.2f}"
 
     positionsTable = positionsTable.sort_values(by="Value", ascending=False).style \
-        .applymap(lambda x: "color: red" if x <= 0 else "color: green", subset=["Performance"]) \
+        .applymap(lambda x: "color: red" if x <= 0 else "color: green", subset=["Performance %"]) \
         .format({
         "Value": format_func,
-        "Performance": format_func,
+        "Performance %": format_func,
     }) \
         .set_properties(**{'font-weight': 'bold'}, subset=['Symbol']) \
         .set_table_styles([
