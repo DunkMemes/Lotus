@@ -17,7 +17,7 @@ from IPython.display import Image
 def mailer_page():
   rec = st.text_input("Your E-Mail adress:")
   now = datetime.datetime.now()
-  run_time = now.replace(hour=21, minute=55, second=0, microsecond=0)
+  run_time = now.replace(hour=22, minute=00, second=0, microsecond=0)
   if st.button("I want to receive E-Mails!"):
     if rec != "":
       while True:
