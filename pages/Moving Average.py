@@ -41,8 +41,11 @@ def pageMV():
     col1, col2 = st.columns(2)
     counter = 0
     placeholder = st.empty()
+    startButton = st.button("Start")
+    stopButton = st.button("Stop", key=counter)
+    # placeholder.button("Stop", key=counter)
     with col1:
-        if st.button("Start"):
+        if startButton:
             if stock == "":
                 st.warning("Please enter a stock first!")
             if tt is None:
@@ -50,7 +53,7 @@ def pageMV():
             elif stock != "":
                 running = 1
             while running == 1:
-                if placeholder.button("Stop", key=counter):
+                if stopButton:
                     running = 0
                     print("Stopping the process!")
                     st.experimental_rerun()
