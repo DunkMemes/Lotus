@@ -68,13 +68,12 @@ def page_dasboard():
 
     format_func = lambda x: f"{x:,.2f}"
 
-    positionsTable = positionsTable.style \
+    positionsTable = positionsTable.sort_values(by="Value", ascending=False).style \
         .applymap(lambda x: "color: red" if x <= 0 else "color: green", subset=["Performance"]) \
         .format({
         "Value": format_func,
         "Performance": format_func,
     }) \
-        .hide_index() \
         .set_properties(**{'font-weight': 'bold'}, subset=['Symbol']) \
         .set_table_styles([
         {
