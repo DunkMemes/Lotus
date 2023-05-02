@@ -80,7 +80,7 @@ class lotus(object):
             orders_df = pd.DataFrame([order._raw for order in all_orders])
             orders_df.drop_duplicates('id', inplace=True)
             if orders_df is not None:
-                dt = orders_df[["symbol", "qty", "filled_avg_price", "status"]]
+                dt = orders_df[["symbol", "qty", "filled_avg_price", "status", "side", "created_at"]]
                 return dt
             else:
                 return None
