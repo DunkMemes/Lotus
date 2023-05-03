@@ -17,7 +17,7 @@ def page_trading():
                 try:
                     lot.buy(qty, sym)
                 except:
-                    st.error(f"Insufficient cash to buy {qty} stock from {sym}")
+                    st.error(f"Not enough Cash!")
         with ucol2:
             if st.button("Sell"):
                 lot.sell(qty, sym)
