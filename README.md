@@ -18,6 +18,7 @@ pip3 install -r requirements.txt
 ```
 Further it is required to have an Alpaca-account. This account gives you access to the `API_KEY` and `API_SECRET`. 
 You can create an account here: https://app.alpaca.markets/signup
+
 To use your `API_KEY` and `API_SECRET` simply create an `.env` file and insert them like this:
 ```cosole
 API_KEY='your key'
@@ -61,3 +62,6 @@ This project was developed for the webdevelopment course by:
 - Jan Röderer
 - Marco Binder
 - David Hentschel
+---------------------------------
+### Documentation
+You can find the documentation under this link: https://github.com/DunkMemes/Lotus/blob/master/APIDOCU.md
