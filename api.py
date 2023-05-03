@@ -178,8 +178,3 @@ class lotus(object):
             self.current_order = self.api.submit_order(stock,
                                                        sell_quantity,
                                                        'sell', 'market', 'day')
-
-
-if __name__ == "__main__":
-    lot = lotus()
-    lot.movingAverageStrategy('TSLA', "1D", 1, 6, 10)
