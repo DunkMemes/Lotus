@@ -1,6 +1,7 @@
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+import os
 import smtplib
 import ssl
 import time
@@ -11,7 +12,6 @@ import threading
 import datetime
 from plotly.offline import plot
 import plotly.graph_objects as go
-from IPython.display import Image
 
 
 def mailer_page():
@@ -42,7 +42,7 @@ def mailer_page():
 def send(rec):
     lot = lotus()
     sender = 'lotus.trading.bot@gmail.com'
-    password = 'dxjllaccwjrzddvj'
+    password = os.getenv("MAIL_PW")
     to = rec
     positions = lot.get_all_positions()
 
